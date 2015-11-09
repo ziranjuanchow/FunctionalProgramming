@@ -122,20 +122,48 @@ lat?
 				(( atom ?  (car  l))  (lat ?  (cdr  l))) 
 				(else  #f )))) 
 
+(cond  	 ...  )  asks questions; 
+(lambda  ...  )  creates a function ; and 
+(define  ...  )  gives it a name. 
+
 (null? l) 查询参数l是否是null。如果是，则是真；否则为假，cond执行下一个查询。
-
-
 else查询是什么意思？
 else查询是否为真。
 
 else是真吗？
 是的，else总是真的。
 
-P31 ～36 /211
+**or ...)是做什么的**
+(or ...)查询两个问题，每次一个。如果第一个是真那么停止并回答真。否则查询第二个问题并以第二个问题的回答作为答案。
+
+( or  . . .  ) asks two questions, one at a time. If the first one is true it stops and answers true. Otherwise it asks the second question and answers with whatever the second question answers. 
+
+**函数member?**
+
+下面是函数member?的定义
+
+	(define member?
+	  (lambda (a lat)
+	    (cond
+	      ((null? lat) #f)
+	      (else (or (eq? (car lat) a)
+	                (member? a (cdr lat)))))))
+
+这章 学会了 2个 **递归函数** 的定义。
 
 ### 第一戒 
 
+Always ask null? as the first question in expressing any function. 
 
 
 
+
+## 第3章 3. Cons the Magnificent                              
+
+[P48/211]
+
+
+
+
+ 
 
