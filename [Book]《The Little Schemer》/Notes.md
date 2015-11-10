@@ -152,7 +152,6 @@ else是真吗？
 这章 学会了 2个 **递归函数** 的定义。
 
 ### 第一戒 
-
 Always ask null? as the first question in expressing any function. 
 
 
@@ -161,6 +160,14 @@ Always ask null? as the first question in expressing any function.
 ## 第3章 3. Cons the Magnificent                              
 
 [P48/211]
+
+### 第二戒 
+Use cons to build lists.    
+使用cons构建list表  
+
+
+
+
 
 
 
