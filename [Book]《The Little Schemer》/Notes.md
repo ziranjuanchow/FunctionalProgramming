@@ -657,7 +657,27 @@ tup+ 有什么特殊之处?
 
 [P96/211]
 
+**rember 函数**  
 
+	(define rember
+	    (lambda (a lat)
+	        (cond
+	       		((null? lat) '())
+	       		((eq? (car lat) a) (cdr lat))
+	       		(else (cons (car lat)
+	                  (rember a (cdr lat)))))))
+
+**rember* 函数**  
+
+	(define rember*
+	  (lambda (a l)
+	    (cond
+			((null? lat) quote())
+			((atom? (car l)))
+			(cond
+				((eq? (car l) a) (rember* a (cdr l)))
+			(else cons (rember(a (car l))) (rember(a (cdr l))) )
+			)))
 
 
 
