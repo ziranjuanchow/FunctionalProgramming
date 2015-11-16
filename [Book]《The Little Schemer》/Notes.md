@@ -120,6 +120,8 @@ The primitive eq? takes two ar­guments. Each must be a non­-numeric atom.
 
 ## 第2章 Do It, Do It Again, and Again, and Again ...                                                      
 
+[P30/211]
+
 lat?
 
 让我们来自己定义 一个函数 lat?
@@ -672,12 +674,349 @@ tup+ 有什么特殊之处?
 	(define rember*
 	  (lambda (a l)
 	    (cond
-			((null? lat) quote())
-			((atom? (car l)))
+			((null? l) (quote()))
+			( (atom? (car l))
+				( cond
+					((eq? (car l) a) (rember* a (cdr l)))
+				(else (cons (car l) (rember* a (cdr l)))) ))
+			(else (cons (rember* a (car l)) (rember* a (cdr l)))) )))
+
+
+
+**insertR* 函数**  
+
+	(define insertR*
+	  (lambda (new old l)
+	    (cond
+			((null? l) (quote()))
+			( (atom? (car l))
+				( cond
+					((eq? (car l) old)  (cons (cons old new) (insertR* new old (cdr l))))
+				(else (cons (car l) (insertR* new old  (cdr l)))) ))
+			(else (cons (insertR* new old (car l)) (insertR* new old (cdr l)))) )))
+
+
+
+### 第一戒 最终版  
+
+When recurring on a list of atoms, lat, ask two questions about it:  (null?  lat) and else. 
+When recurring on a number, n, ask two questions about it:  (zero?  n)  and else. 
+When recurring on a list of S-expressions, l, ask three question about it:  (null? l),  (atom? (car l)), and else. 
+
+当在一个由原子构成的列表(lat)上递归时，问两个问题：(null? lat) 还有 else.
+当在一个数字上递归时，问两个问题：(zero? n) 还有 else.
+当在一个由S-表达式构成的列表（复合列表）上递归时，问三个问题：(null? l), (atom? (car l)),还有 else.
+
+
+### 第四戒 最终版  
+
+递归时至少要有一个参数变化，并且向终止条件方向变化。变化的参数必须有终止测试条件：当递归原子(lat)时使用(cdr lat)。当递归数n时使用(sub1 n)。当递归一个 S-expression的列表l,当(null? l)或者(atom? (car l))使用(car l)和(cdr l)。
+递归时参数要向终止条件方向变化：当使用cdr时，用null?测试终止；
+当使用sub1时，用zero?测试终止。
+
+
+
+**occur* 函数**  
+
+	(define rember*
+	  (lambda (a l)
+	    (cond
+			((null? l) 0)
+			( (atom? (car l))
+				( cond
+					((eq? (car l) a) (add1 (occur* a (cdr l))))
+				(else (occur* a (cdr l))) ))
+			(else (+ (occur* a (car l)) (occur* a (cdr l)))) )))
+
+
+**subst* 函数**  
+
+	(define subst*
+	  (lambda (new old l)
+	    (cond
+			((null? l) (quote()))
+			( (atom? (car l))
+				( cond
+					((eq? (car l) old)  (cons new (subst* new old (cdr l))))
+				(else (cons (car l) (subst* new old  (cdr l)))) ))
+			(else (cons (subst* new old (car l)) (subst* new old (cdr l)))) )))
+
+
+
+**insertL* 函数**  
+
+	(define insertL*
+	  (lambda (new old l)
+	    (cond
+			((null? l) (quote()))
+			( (atom? (car l))
+				( cond
+					((eq? (car l) old)  (cons (cons new old) (insertL* new old (cdr l))))
+				(else (cons (car l) (insertL* new old  (cdr l)))) ))
+			(else (cons (insertL* new old (car l)) (insertL* new old (cdr l)))) )))
+
+
+**member* 函数**  
+
+	(define member*
+	  (lambda (a l)
+	    (cond
+			((null? l) #f)
+			((atom? (car l))
+				(or (eq? (car l) a) (member* a (cdr l))
+			(else (or (member* a (car l)) (member* a (cdr l)))) )))
+
+
+Here is our description : 
+"The function leftmost finds the leftmost atom in a non-empty list of S-expressions that does not contain the empty list."   
+“函数 leftmost 查找 S-expression 表达式中非空 list 中的的最左边的一个原子。  
+
+	(define leftmost*
+	  (lambda (l)
+	    (cond
+			((atom? (car l)) (car l))
+			(else (leftmost* (car l))) )))
+
+
+(or ...) 一次查询一个直到出现真然后停下来，返回真。如果找不到真，那么(or ...)的值是假。
+
+(and ...)一次查询一个，直到出现否，然后返回假。如果总找不到假的表达式，(and ...)的值为真。
+
+	(define eqlist*
+	  (lambda (l1 l2)
+	    (cond
+			((and (null? l1) (null? l2)) #t)
+			((or (null? l1) (null? l2)) #f)
+			(else
+				(and (equal? (car l1) (car l2)))
+					(eqlist* (cdr l1) (cdr l2)))) )))
+
+
+### 第六戒  
+Simplify  only  after the  function  is  correct.  
+仅当函数正确后再简化  
+
+
+## 第6章 6. Shadows
+
+[P112/211]
+
+我们这样描述
+“对于这一章，算术表达式可以是atom原子(包括数)，或者由+，×，或者^连接的两个算术表达式。”
+
+
+numbered? 是什么  
+一个函数，查询一个算术表达式是否只包含有在 + ，× ，和 ^ ，及其后边的数。  
+
+  
+	(define numbered?
+	 (lambda (aexp)
+	   (cond
+	     ((atom? aexp) (number? aexp))
+	     ((eq? (car (cdr aexp)) (quote +))
+	      (and (numbered? (car aexp))
+	           (numbered? (car (cdr (cdr aexp))))))
+	     ((eq? (car (cdr aexp)) (quote ×))
+	      (and (numbered? (car aexp))
+	           (numbered? (car (cdr (cdr aexp))))))
+	     ((eq? (car (cdr aexp)) (quote ^))
+	      (and (numbered? (car aexp))
+	           (numbered? (car (cdr (cdr aexp)))))))))
+
+写个再简单点版本。
+
+我自己写的简化版本：
+
+	(define numbered?
+	 (lambda (aexp)
+	   (cond
+	     ((atom? aexp) (number? aexp))
+	      ((or (eq? (car (cdr aexp)) (quote +) (eq? (car (cdr aexp)) (quote ×) (eq? (car (cdr aexp)) (quote ^)) )
+	      (and (numbered? (car aexp))
+	           (numbered? (car (cdr (cdr aexp)))))))))
+
+书上给的简化版本：
+
+	(define numbered?
+	 (lambda (aexp)
+	   (cond
+	     ((atom? aexp) (number? aexp))
+	     (else (and (numbered? (car aexp)) 
+	                (numbered? (car (cdr (cdr aexp)))))))))	
+
+
+
+### 第七戒
+Recur on the subparts that are of the same nature: 
+•  On the sublists of a list. 
+•  On the sub expressions of an arithmetic expression.
+
+在相同本性的东西上递归子组成部分：
+*list表
+*算术表达式
+
+算术表达式的表达的第1个子表达式
+
+	(define 1st-sub-exp
+	 (lambda (aexp)
+	   (car (cdr aexp))))
+
+算术表达式的表达的第2个子表达式
+
+	(define 2nd-sub-exp
+	 (lambda (aexp)
+	   (car (cdr (cdr aexp)))))
+
+算术表达式的 操作符
+
+	(define  operator
+	 (lambda (aexp)
+	   (car aexp)))
+
+现在再一次重写函数value
+
+	(define value
+	 (lambda (nexp)
+	   (cond
+	    ((atom? nexp) nexp)
+	    ((eq? (operator nexp) (quote +))
+	     (+ (value (1st-sub-exp nexp))
+	        (value (2nd-sub-exp nexp))))
+	    ((eq? (operator nexp) (quote x))
+	     (x (value (1st-sub-exp nexp))
+	        (value (2nd-sub-exp nexp))))
+	    (else
+	     (^ (value (1st-sub-exp nexp))
+	        (value (2nd-sub-exp nexp)))))))
+
+
+### 第八戒
+
+Use  help functions  to  abstract  from  representations.   
+使用辅助函数来抽象表达   
+
+还记得我们有多少个对数使用的元函数吗？
+
+四个：numbers? zero? add1和sub1
+
+本章后面这些内容：
+用 ()代表0， (()) 代表1， ((())) 代表2， 没看懂什么意思。
+还可以用 ()代表0， (()) 代表1， (()()) 代表2， (()()()) 代表3
+
+就是说可以随便来定义数字么。
+
+通过这种嵌套关系或者并列关系，可以随便来定义？
+
+
+## 第7章 7. Friends and Relations                               
+
+[P126/211]
+
+关系型数据库？
+
+这是一个set集合吗？
+ (apple peaches apple plum)
+
+不是，apple出现了不止一次
+
+	(define set?
+	 (lambda (lat)
+	   (cond
+	     ((null? lat) #t)
+	     ((member? (car lat) (cdr lat)) #f)
+	     (else (set? (cdr lat))))))
+
+(makeset lat)是什么，其中lat是
+(apple peach pear peach plum apple lemon peach)
+
+(apple peach pear plum lemon)
+
+试试用member?写出函数makeset
+
+	(define makeset
+	 (lambda (lat)
+	   (cond
+	     ((null? lat) (quote ()))
+	     ((member? (car lat) (cdr lat))
+	      (makeset (cdr lat)))
+	     (else (cons (car lat)
+	                  (makeset (cdr lat)))))))
+
+(subset? set1 set2)
+是什么，其中
+set1 是(5 chicken wings)
+set2 是(5 hamburgers 2 pieces fried chicken and light duckling wings)
+
+ 	#t，因为每一个set1中的原子也在set2中。
+
+试着写出来定义  
+
+	(define subset?
+	 (lambda (set1 set2)
+	   (cond
+	     ((null? set1) #t)
+	     ((member? (car set1) set2)
+	      (subset? (cdr set1) set2))
+	     (else #f))))
+
+
+(eqset? set1 set2)
+是什么，其中
+set1 是(6 large chickens with wings)，
+set2 是(6 chickens with large wings)
+
+	#t
+
+试着写出来定义  
+
+	(define eqset?
+	 (lambda (set1 set2)
+	   (and (subset? set2 set1) (subset? set1 set2))
+	    ))
+
+但这样根本无法保证 set1 和 set2 一定是 集合啊。
+
+(intersect? set1 set2)
+是什么，其中
+set1 是 (stewed tomatoes and macaroni)
+set2 是 (macaroni and cheese)
+
+	#t，因为set1至少有一个原子出现在set2中。交集
+
+试着写出来定义 
+
+	(define intersect?
+		 (lambda (set1 set2)
 			(cond
-				((eq? (car l) a) (rember* a (cdr l)))
-			(else cons (rember(a (car l))) (rember(a (cdr l))) )
-			)))
+				((null? set1) #f)
+		   (else (or (member? (car set1) set2) (intersect? (cdr set1) set2)))
+		    )))
 
 
+(intersect set1 set2)是什么，其中
+set1 是(stewed tomatoes and macaroni)
+set2 是(macaroni and cheese)
+
+	(and macaroni)
+
+试着写出来定义 
+	
+	(define intersect?
+	 (lambda (set1 set2)
+	   (cond
+	     ((null? set1) (quote()))
+	     ((member? (car set1) set2) (cons (car set1) (intersect? (cdr set1) set2)))
+		(else (intersect? (cdr set1) set2)) 
+	     )))
+
+(union set1 set2)
+是什么，其中
+set1 是(stewed tomatoes and macaroni casserole)
+set2 是(macaroni and cheese)
+
+	(stewed tomatoes casserole macaroni and cheese)
+
+试着写出来定义
+
+[P131/211]
 
