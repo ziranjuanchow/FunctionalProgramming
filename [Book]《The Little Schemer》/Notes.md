@@ -931,7 +931,7 @@ Use  help functions  to  abstract  from  representations.
 
 (apple peach pear plum lemon)
 
-试试用member?写出函数makeset
+试试用member?写出函数makeset **makeset 去掉列表中重复的元素，生成一个集合**
 
 	(define makeset
 	 (lambda (lat)
@@ -999,14 +999,14 @@ set2 是(macaroni and cheese)
 
 	(and macaroni)
 
-试着写出来定义 
+试着写出来定义 **intersect 两个列表的交集**
 	
-	(define intersect?
+	(define intersect
 	 (lambda (set1 set2)
 	   (cond
 	     ((null? set1) (quote()))
-	     ((member? (car set1) set2) (cons (car set1) (intersect? (cdr set1) set2)))
-		(else (intersect? (cdr set1) set2)) 
+	     ((member? (car set1) set2) (cons (car set1) (intersect (cdr set1) set2)))
+		(else (intersect (cdr set1) set2)) 
 	     )))
 
 (union set1 set2)
@@ -1016,7 +1016,159 @@ set2 是(macaroni and cheese)
 
 	(stewed tomatoes casserole macaroni and cheese)
 
-试着写出来定义
+试着写出来定义  **union 两个列表的并集**
 
 [P131/211]
+
+	(define union
+	 (lambda (set1 set2)
+	   (cond
+	     ((null? set1) set2)
+	     ((member? (car set1) set2)
+	      (union (cdr set1) set2))
+	     (else (cons (car set1)
+	                 (union (cdr set1) set2))))))
+
+
+“这个函数返回的是set1中有，但是set2中没有的原子。
+
+	(define xxx
+	  (lambda (set1 set2)
+	    (cond
+	     ((null? set1) '())
+	     ((member? (car set1) set2)
+	      (xxx (cdr set1) set2))
+	     (else
+	      (cons (car set1)
+	            (xxx (cdr set1) set2))))))	
+
+
+(intersectall l-set)
+是什么，其中
+l-set 是 ((a b c) (c a d e) (e f g h a b))
+
+	(a)
+
+它返回在l-set的所有子set中都有的原子。
+
+试着写出来定义 **intersectall 所有列表的交集**
+
+	(define intersectall
+	  (lambda (l-set)
+	    (cond
+	     ((null? (cdr l-set))  (car l-set))
+	     ((intersect (car l-set) (intersectall (cdr l-set)))
+		)))
+
+ 
+(a-pair? l)
+其中 l 是
+(full (house))
+
+	#t。 因为列表中只有两个表达式。
+
+定义函数 a-pair?
+	
+	(define a-pair?
+	 (lambda (x)
+	   (cond
+	     ((atom? x) #f)
+	     ((null? x) #f)
+	     ((null? (cdr x)) #f)
+	     ((null? (cdr (cdr x))) #t)
+	     (else #f))))
+
+取得一个piar的第一个 S-expression表达式
+
+	(define first
+	  (lambda (p)
+	    (car p)))
+
+取得一个piar的第二个 S-expression表达式
+	
+	(define second
+	  (lambda (p)
+	    (car (cdr p))))
+
+怎样用两个原子构建一个 pair
+	
+	(define build
+	  (lambda (s1 s2)
+	    (cons s1 (cons s2 (quote ())))))
+
+rel: pair对的一个的集合
+
+(revrel rel)
+是什么，其中 l 是
+(8 a) (pumpkin pie) (got sick))
+
+	((a 8) (pie pumpkin) (sick got))
+
+从 pair对的集合中每个列表 抽取第1个元素，生成一个了列表，看这个列表是否是一个set
+
+	(define fun?
+	 (lambda (rel)
+	   (set? (firsts rel))))
+
+好吧，上面这个函数没有看懂，为啥可以生成一个集合。
+
+试着写出来定义 **revrel **
+
+	(define revrel
+	 (lambda (rel)
+	   (cond
+	    ((null? rel) quote ())
+	    (else (cons (build
+	            (second (car rel))
+	            (first (car rel)))
+	           (revrel (cdr rel)))))))
+
+假设我们有如下函数revpair可以反转一个piar对的两个成员。
+
+	(define revpair
+	  (lambda (pair)
+	    (build (second pair) (first pair))))
+
+如何用这个辅助函数重写revrel
+
+	(define revrel
+	 (lambda (rel)
+	   (cond
+	    ((null? rel) quote ())
+	    (else (cons (revpair (car rel))
+	           (revrel (cdr rel)))))))
+
+从 pair对的集合中每个列表 抽取第2个元素，生成一个了列表，看这个列表是否是一个set
+
+	(define fullfun?
+	 (lambda (fun)
+	   (set? (seconds fun))))
+
+
+## 第8章 8. Lambda the Ultimate                             
+
+[P140/211]
+
+(rember-f test? a l)
+是什么，其中
+test? 是 =
+a 是 5
+l 是 (6 2 5 3)
+
+	(6 2 3)
+
+	注： Lisp:(rember-f (function =) 5 '(6 2 5 3))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
