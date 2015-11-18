@@ -1159,12 +1159,35 @@ l 是 (6 2 5 3)
 
 	注： Lisp:(rember-f (function =) 5 '(6 2 5 3))
 
+试着写出函数 rember-f
 
+	(define rember-f
+	 (lambda (test? a l)
+	   (cond
+	    ((null? l) (quote ()))
+	    ((test? (car l) a) (cdr l))
+	    (else (cons (car l)
+	                (rember-f test? a
+	                          (cdr l)))))))
 
+换句话， test? 这个函数 被当作 一个参数 传递给了函数 rember-f
 
+现在重写 rember-f 为一个参数test?的函数，返回一个如同用eq?替换test?的rember。
 
+	(define rember-f
+	 (lambda (test?)
+	   (lambda (a l)
+	     (cond
+	       ((null? l) (quote ()))
+	       ((test? (car l) a) (cdr l))
+	       (else (cons (car l) 
+	               ((rember-f test?) a (cdr l))))))))
 
+仔细体会 上下两个 函数的差别，在最后一行的地方。
+一个是接收3个参数，一个是接收一个函数。
+然后返回值也不同。
 
+[P142/211]
 
 
 
