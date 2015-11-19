@@ -24,6 +24,15 @@ http://personball.com/fp/2013/01/15/notes-about-the-little-schemer/
 先看原书，看不下去的地方，去看翻译版本，再然后看 在线学习 网站，试着更加深入的了解。
 
 
+## 概要
+
+第8章 	讲解把函数当作参数         
+第9章 	讲解Y组合子，以及匿名函数中如何定义递归的，在没有名字的情况下。	【还没看懂 Y组合子，智商不够了么】             
+第10章 	讲解 实现一个 scheme 解释器。           
+
+
+
+
 ##　preface
 
 
@@ -1189,9 +1198,111 @@ l 是 (6 2 5 3)
 
 [P142/211]
 
+本章的剩下页数 没有杂细看了，以后再仔细看，感觉就是 函数可以作为参数和返回结果罢了。
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 第9章 9. ... and Again, and Again, and Again, ...       
+
+
+讲 total function 和 partial function
+
+就是非自然的递归。
+
+
+
+### Y Combinator - Y 组合子
+
+一句话解释： Y Combinator 用于计算（高阶）函数的不动点，使得lambda演算可以定义匿名递归函数。
+>  
+http://www.zhihu.com/question/20115649
+
+**JavaScript(ES6) 实现** - 重新发明 Y 组合子 JavaScript(ES6) 版
+>  
+http://picasso250.github.io/2015/03/31/reinvent-y.html
+
+**scheme 实现** - Reinventing the Y combinator - 王垠 写的
+>  
+http://www.slideshare.net/yinwang0/reinventing-the-ycombinator
+
+**Python 实现** - Y Combinator in Python 
+>  
+http://air.googol.im/2007/08/31/y-combinator-in-python.html
+
+### Fixed-point combinator，不动点组合子
+
+其他教材  
+>   
+https://zh.wikipedia.org/wiki/%E4%B8%8D%E5%8A%A8%E7%82%B9%E7%BB%84%E5%90%88%E5%AD%90
+
+魂断不动点——Y组合子的前世今生  
+>   
+http://deathking.github.io/2015/03/21/all-about-y-combinator/
+
+
+这个函数有名字吗？
+
+有，它被称为Y 算子(Y combinator)。
+
+	(define Y
+	 (lambda (le)
+	   ((lambda (f) (f f))
+	    (lambda (f)
+	      (le (lambda (x) ((f f) x)))
+		))))
+
+---
+
+一步一步讲解Y组合子 (Y-Combinator Explained Step by Step) 
+[作者最后一句:"接下来的推导就比较困难了，我现在还没能完全弄清楚怎么到我们常见的最终形式。" 简直想让我吐血啊!]
+>  
+http://www.cppblog.com/wuwu/archive/2014/07/07/207556.aspx  
+
+Y组合子常见的最终形式是：  
+Y = λf.(λx.f (x x)) (λx.f (x x))  
+用Scheme写出来则是：   
+
+	(define y-combinator
+	  (lambda (f)
+	    ((lambda (x) (f (lambda (y) ((x x) y))))
+	     (lambda (x) (f (lambda (y) ((x x) y)))))
+		))
+
+这个最终形式的Y组合子可以工作在非Lazy的正确实现的Scheme里。  
+
+
+看不懂啊,看不懂啊!!!  到第四点-不动点 这里就看不懂了!!!!
+
+---
+
+scheme下的停机问题和Y组合子
+>  
+http://www.cppblog.com/huaxiazhihuo/archive/2013/07/13/201689.html
+
+回家仔细看.
+
+
+
+
+                                           
