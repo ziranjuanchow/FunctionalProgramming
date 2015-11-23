@@ -1250,6 +1250,14 @@ http://www.slideshare.net/yinwang0/reinventing-the-ycombinator
 >  
 http://air.googol.im/2007/08/31/y-combinator-in-python.html
 
+**使用Lambda表达式编写递归函数** - 老赵 写的BLOG，仔细看看吧。【MD，写的都是啥啊】
+> 
+http://www.cnblogs.com/JeffreyZhao/archive/2009/08/31/recursive-lambda-expressions.html
+
+**Recursive lambda expressions** - 一篇英文教学，据说 老赵 都看的不是很懂。
+> 
+http://blogs.msdn.com/b/madst/archive/2007/05/11/recursive-lambda-expressions.aspx
+
 ### Fixed-point combinator，不动点组合子
 
 其他教材  
