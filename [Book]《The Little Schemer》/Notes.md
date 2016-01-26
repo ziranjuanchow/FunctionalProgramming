@@ -102,6 +102,7 @@ cons adds an atom to the front of a list.
 ：The primitive cons takes two arguments. 
 
 The second argument to cons must be a list. The result is a list. 
+[the first one is any S-expression,the result is a list]
 
 ###  **The Law of Null? 
 ： The primitive null? is de­fined only for lists.** 
