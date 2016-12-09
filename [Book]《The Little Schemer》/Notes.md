@@ -524,6 +524,7 @@ tup+ 有什么特殊之处?
 	     (else (< (sub1 n) (sub1) m)))))
 
 = 的定义, 下面这定义,我没看懂啊.
+(终于看懂了-2016-11-29：m如果为零，返回(zero? n)的结果，)
 
      (define =
 	  (lambda (n m)
@@ -626,12 +627,18 @@ tup+ 有什么特殊之处?
 					(else (all-nums (cdr lat)))
 				)))))
 
-写一个函数eqan?，当两个参数a1和a2是一样的原子时为真。
+写一个函数eqan?，当两个参数a1和a2是一样的原子时为真。[不管是 num 还是非num的atom都可以用这个来判断了。]
 
 **eqan? 定义** 
 
-这个待写.
-
+	（define eqan?
+		(lambda (a1 a2)
+			(cond
+				((and (number? a1) (number? a2))
+				 (= a1 a2))
+				((or (number? a1) (number? a2)) #f)
+				(else(eq? a1 a2)) 
+				)))
 ---  
 
 现在写一个函数occur描述一个lat中出现原子a的次数
