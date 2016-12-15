@@ -36,7 +36,7 @@ http://personball.com/fp/2013/01/15/notes-about-the-little-schemer/
 “如果你读过The Little Lisper（后更名为The Little Schemer），本书的前篇，你应该知道list是Lisp的心脏。事实上，"LISP"原本是"LISt Processing"的简写。推而广之，C语言可以称之为CHAP（"CHAracter Processing"），而Fortran可称之为FLOP（"FLOating-point Processing"）。”
 
 
-##　preface
+## preface
 
 
 recursive		递归
