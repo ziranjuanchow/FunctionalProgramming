@@ -2,8 +2,8 @@
 
 
 ## 学习这本书可以参考的资料
-
-首先说句："google 好样的，同样的关键字【the little schemer 中文】，google第1页就能搜出下面的资料，百度第1页搜的都是啥，都是啥！！！"
+<!---
+	首先说句："google 好样的，同样的关键字【the little schemer 中文】，google第1页就能搜出下面的资料，百度第1页搜的都是啥，都是啥！！！"-->
 
 别人写好的**翻译版本**。
 > 
@@ -27,7 +27,10 @@ http://personball.com/fp/2013/01/15/notes-about-the-little-schemer/
 ## 概要
 
 第8章 	讲解把函数当作参数         
-第9章 	讲解Y组合子，以及匿名函数中如何定义递归的，在没有名字的情况下。	【还没看懂 Y组合子，智商不够了么】             
+第9章 	讲解Y组合子，以及匿名函数中如何定义递归的，在没有名字的情况下。
+<!---	
+	【还没看懂 Y组合子，智商不够了么】 
+	【哈哈现在终于看懂了】-->            
 第10章 	讲解 实现一个 scheme 解释器。           
 
 
@@ -522,9 +525,9 @@ tup+ 有什么特殊之处?
 	     ((zero? m) #f)
 	     ((zero? n) #t)
 	     (else (< (sub1 n) (sub1) m)))))
-
-= 的定义, 下面这定义,我没看懂啊.
-(终于看懂了-2016-11-29：m如果为零，返回(zero? n)的结果，)
+<!---
+	= 的定义, 下面这定义,我没看懂啊.
+	(终于看懂了-2016-11-29：m如果为零，返回(zero? n)的结果，)-->
 
      (define =
 	  (lambda (n m)
@@ -1219,22 +1222,6 @@ l 是 (6 2 5 3)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 第9章 9. ... and Again, and Again, and Again, ...       
 
 
@@ -1250,36 +1237,17 @@ l 是 (6 2 5 3)
 >  
 http://www.zhihu.com/question/20115649
 
-**JavaScript(ES6) 实现** - 重新发明 Y 组合子 JavaScript(ES6) 版
->  
-http://picasso250.github.io/2015/03/31/reinvent-y.html
 
-**scheme 实现** - Reinventing the Y combinator - 王垠 写的
+**scheme 实现** - Reinventing the Y combinator - 王垠 写的，25张幻灯片讲解
 >  
 http://www.slideshare.net/yinwang0/reinventing-the-ycombinator
 
-**Python 实现** - Y Combinator in Python 
->  
-http://air.googol.im/2007/08/31/y-combinator-in-python.html
 
-**使用Lambda表达式编写递归函数** - 老赵 写的BLOG，仔细看看吧。【MD，写的都是啥啊】
-> 
-http://www.cnblogs.com/JeffreyZhao/archive/2009/08/31/recursive-lambda-expressions.html
-
-**Recursive lambda expressions** - 一篇英文教学，据说 老赵 都看的不是很懂。
+**Recursive lambda expressions** - 一篇英文教学
 > 
 http://blogs.msdn.com/b/madst/archive/2007/05/11/recursive-lambda-expressions.aspx
 
 ### Fixed-point combinator，不动点组合子
-
-其他教材  
->   
-https://zh.wikipedia.org/wiki/%E4%B8%8D%E5%8A%A8%E7%82%B9%E7%BB%84%E5%90%88%E5%AD%90
-
-魂断不动点——Y组合子的前世今生  
->   
-http://deathking.github.io/2015/03/21/all-about-y-combinator/
-
 
 这个函数有名字吗？
 
@@ -1294,10 +1262,7 @@ http://deathking.github.io/2015/03/21/all-about-y-combinator/
 
 ---
 
-一步一步讲解Y组合子 (Y-Combinator Explained Step by Step) 
-[作者最后一句:"接下来的推导就比较困难了，我现在还没能完全弄清楚怎么到我们常见的最终形式。" 简直想让我吐血啊!]
->  
-http://www.cppblog.com/wuwu/archive/2014/07/07/207556.aspx  
+
 
 Y组合子常见的最终形式是：  
 Y = λf.(λx.f (x x)) (λx.f (x x))  
@@ -1311,16 +1276,12 @@ Y = λf.(λx.f (x x)) (λx.f (x x))
 
 这个最终形式的Y组合子可以工作在非Lazy的正确实现的Scheme里。  
 
-
-看不懂啊,看不懂啊!!!  到第四点-不动点 这里就看不懂了!!!!
-
+<!---
+	看不懂啊,看不懂啊!!!  到第四点-不动点 这里就看不懂了!!!!
+	终于搞懂了，不动点，Y组合子，递归如何写，2018-02-16！！！！
+	-->
 ---
 
-scheme下的停机问题和Y组合子
->  
-http://www.cppblog.com/huaxiazhihuo/archive/2013/07/13/201689.html
-
-回家仔细看.
 
 
 
