@@ -90,12 +90,6 @@ then let do second challenging:
 
 
 
-What is a Monad? - Computerphile
->https://www.youtube.com/watch?v=t1e8gqXLbsU
-
-   
-this speak  data type
-
 康托尔、哥德尔、图灵——永恒的金色对角线(rev#2)
 >http://blog.csdn.net/pongba/article/details/1336028
 <!---
@@ -176,7 +170,24 @@ it's work! so the recursion n! is:
 
 
 
+## Monad
 
+What is a Monad? - Computerphile
+>https://www.youtube.com/watch?v=t1e8gqXLbsU
+
+
+图文解说版 [原] /［译］
+>http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
+>http://jiyinyiyong.github.io/monads-in-pictures/
+   
+
+两篇paper：
+先看Philip Wadler的Monads for functional programming，
+然后看他的The essence of functional programming，后者提到了Monad和CPS之间的关系。
+然后你还得写。。写几个用Monad的parser/interpreter就熟悉了。
+
+
+<!--- 看不懂monad啊，paper也 全是 英文的。-->
 
 
 
