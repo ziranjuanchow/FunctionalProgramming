@@ -34,7 +34,7 @@ takes two things,and choose the second one.
 
 	NOT = λb. b FALSE TRUE
 
-takes boolem, 
+takes boolean type, 
 
 	AND = λb1.λb2. b1 b2 FALSE
 
@@ -76,17 +76,18 @@ then let do first challenging:
 (λx.x) input (rec (λx.x))
 
 	loop = rec (λx.x)
-
-well done!
-
-<!---
 then let do second challenging:
 
-	fac = rec (λf.λn.n*f(n-1))
-	fac = (λf.λn.n*f(n-1))(rec (λf.λn.n*f(n-1)))
-
-	fac 3 = 3*(fac 2)
--->
+	fac = rec (λf.λn.if n == 0 then 1 else n*f(n-1))
+	fac = (λf.λn.if n == 0 then 1 else n*f(n-1))(rec (λf.λn.if n == 0 then 1 else n*f(n-1)))
+	
+	测试下：
+	fac 3 = (λf.λn.if n == 0 then 1 else n*f(n-1))(rec (λf.λn.if n == 0 then 1 else n*f(n-1))) 3
+	fac 3 = 3*(rec (λf.λn.if n == 0 then 1 else n*f(n-1))) 2
+	...
+	fac 3 = 3*2*1*1 
+	fac 3 = 6
+well done!
 
 
 
@@ -145,11 +146,11 @@ invented by someone called Haskell Curry.
 	6(λf.λX.(if x == 0 then 1 else x*f(x-1)) (YF) 0)
 	6(if 0 == 0 then 1 else 3*(YF)(0-1))
 	6 1
-    6
+	6
 
 
 it's work! so the recursion n! is:
-	 
+​	 
 	F-rec:= YF
 	F-rec:= (λf.(λx.f(x x))(λx.f(x x)))(λf.λX.(if x == 0 then 1 else x*f(x-1)))
 
@@ -179,7 +180,7 @@ What is a Monad? - Computerphile
 图文解说版 [原] /［译］
 >http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
 >http://jiyinyiyong.github.io/monads-in-pictures/
-   
+
 
 两篇paper：
 先看Philip Wadler的Monads for functional programming，
